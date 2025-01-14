@@ -22,12 +22,25 @@ impl Deck{
         Deck { cards }
     }
 
-    fn shuffle (&self){
+    fn shuffle (&mut self){
+        let mut rng = thread_rng();
+        self.cards.shuffle(&mut rng);
     } 
+
+    fn deal(&mut self, num_cards: usize) -> Vec<String> {
+        if self.cards.len() < num_cards{
+            return self.cards.split_off(0);
+        }
+        self.cards.split_off(self.cards.len() - num_cards)
+    }
 }
 
 fn main() {
-    let deck = Deck::new();
+    let mut deck = Deck::new();
 
-    println!("Here is your deck: {:#?}", deck);
+    //deck.shuffle();
+
+    let cards = deck.deal(3);
+
+    println!("Here is your hand: {:#?}", cards);
 }
